@@ -14,7 +14,7 @@ import config
 def pytest_addoption(parser):
     parser.addoption(
         "--context",
-        default=None,
+        default='local_emulator',
         help="Укажите файл настроек: local_emulator, local_real, bstack"
     )
 
