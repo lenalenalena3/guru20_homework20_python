@@ -14,7 +14,6 @@ class BaseAppSettings(BaseSettings):
     REMOTE_URL: str
     APP_WAIT_ACTIVITY: str
     DEVICE_NAME: str
-    UDID: str
 
     def __init__(self, **kwargs):
         # Вывод информации перед загрузкой настроек
@@ -34,6 +33,7 @@ class BaseAppSettings(BaseSettings):
 
 
 class LocalEmulatorSettings(BaseAppSettings):
+    UDID: str
     APP: str
 
     @field_validator("APP")
@@ -56,7 +56,6 @@ class LocalEmulatorSettings(BaseAppSettings):
 
 
 class LocalRealSettings(BaseAppSettings):
-    DEVICE_NAME: str
     APP: str
 
     @field_validator("APP")
@@ -106,11 +105,11 @@ def driver_options(context: Literal["local_emulator", "local_real", "bstack"]) -
 
     options.set_capability('remote_url', settings.REMOTE_URL)
     options.set_capability('deviceName', settings.DEVICE_NAME)
-    options.set_capability('udid', settings.UDID)
     options.set_capability('appWaitActivity', settings.APP_WAIT_ACTIVITY)
 
     if context in ("local_emulator", "local_real"):
         options.set_capability('app', abs_path_from_project(settings.APP))
+        options.set_capability('udid', settings.UDID)
 
     if context == 'bstack':
         credentials_path = abs_path_from_project('.env.credentials')
